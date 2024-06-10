@@ -1,0 +1,6 @@
+flask
+pymongo
+opencv-python
+face_recognition
+ultralytics
+numpy
