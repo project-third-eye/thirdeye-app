@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noise Data</title>
+</head>
+<body>
+    <h1>Noise Data</h1>
+    {% if is_noise %}
+        <p>Noise detected!</p>
+    {% else %}
+        <p>No noise detected.</p>
+    {% endif %}
+    <img src="{{ url_for('static', filename='audio_plot.png') }}" alt="Audio Plot">
+</body>
+</html>

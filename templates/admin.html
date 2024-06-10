@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome, Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-welcome {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .admin-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .admin-actions button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .admin-actions button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-welcome">
+        <h1>Welcome, Admin</h1>
+    </div>
+    <div class="admin-actions">
+        <button onclick="viewUsers()">View Users</button>
+        <button onclick="viewQuestions()">View Questions</button>
+        <button onclick="viewDetectedObjects()">View Detected Objects</button>
+        <button onclick="addUser()">Add User</button>
+        <button onclick="deleteUser()">Delete User</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        function viewUsers() {
+            window.location.href = "/view_users";
+        }
+
+        function viewQuestions() {
+            window.location.href = "/view_questions";
+        }
+
+        function viewDetectedObjects() {
+            window.location.href = "/view_detected_objects";
+        }
+
+        function addUser() {
+            window.location.href = "/add_user";
+        }
+
+        function deleteUser() {
+            window.location.href = "/delete_user";
+        }
+        function logout(){
+            window.location.href = "/"
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Acknowledgement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="script" href="{{url_for('static', filename='js/script.js')}}">
+    <style>
+        .logo {
+            position: absolute;
+            top: 0px;
+            left: 0px; 
+            width: 200px;
+            max-width: 100%; /* Set maximum width to ensure responsiveness */
+            height: auto; /* Allow height to adjust proportionally */
+            z-index: 1; 
+        }
+        .guidelines {
+            padding-top: 240px; /* Adjust padding to account for logo height */
+        }
+        .guidelines h1 {
+            color: rgb(255, 255, 255);
+            text-align: center;
+        }
+        .guidelines ol {
+            line-height: 1.5; 
+        }
+        .container {
+            text-align: center; /* Center align the form elements */
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <img src="{{ url_for('static', filename='image/third_eye.png') }}" class="logo" alt="Third Eye Logo">
+        <div class="guidelines">
+            <h1><u>GUIDELINES AND INSTRUCTIONS</u></h1>
+            <ol>
+                <li>Arrange for stable Internet connectivity.</li>
+                <li>Giving examination on Laptop or Desktop is highly recommended.</li>
+                <li>Make sure mobile/laptop is fully charged. Power bank for mobile or UPS/Inverter for 
+                    laptop/desktop should be arranged for uninterrupted power supply.</li>
+                <li>Login to the portal 10 min before the online examination start time.</li>
+                <li>Close all browsers/tabs before starting the online examination.</li>
+                <li>Once the exam starts, do not switch to any other window/tab. On doing so, your attempt 
+                    may be considered as malpractice and your exam may get terminated.</li>
+                <li>Do Not Pickup/Receive the Call during the exam if you are giving the exam on mobile.
+                     This also will be treated as changing the window.</li>
+                <li>To avoid unwanted pop-ups, use of Ad Blocker is recommended.</li>
+                <li>Clear browser cache memory on mobile and laptops. Clear browsing history and also delete temp files.</li>
+                <li>Student will not allow to login after 30 min from the start of examination. </li>
+            </ol>
+            <div class="container">
+                <form method="POST" action="/submit_guidelines">
+                    <div class="checkbox-container">
+                        <label for="condition1">
+                            <input type="checkbox" id="condition1">
+                            I acknowledge that I have read and agree to the terms and conditions.
+                        </label>
+                    </div>
+                    <button type="submit" class="button1">Submit</button>
+                    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

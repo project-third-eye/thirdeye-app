@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete User</title>
+</head>
+<body>
+    <h1>Delete User</h1>
+    <form id="deleteForm" action="/delete" method="post">
+        <label for="username">Enter the username to delete:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="confirmation">Are you sure?</label>
+        <input type="checkbox" id="confirmation" name="confirmation" required><br><br>
+        
+        <input type="submit" value="Delete User">
+    </form>
+
+    <script>
+        document.getElementById('deleteForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            // Get the username and confirmation status
+            var username = document.getElementById('username').value;
+            var confirmation = document.getElementById('confirmation').checked;
+            
+            // Send an AJAX request to delete the user
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/delete', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.deleted) {
+                        alert('User deleted successfully.');
+                    } 
+                    
+                }
+                else {
+                    alert('No user found with the given username.');
+                }
+            };
+            xhr.send(JSON.stringify({ username: username, confirmation: confirmation }));
+        });
+    </script>
+</body>
+</html>

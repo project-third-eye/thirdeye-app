@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Page with Logo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+          
+            color: #333;;
+            padding: 0px;
+            display: inline-flexbox;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            height: 250px;
+            width: auto;
+        }
+        h1 {
+            margin: 0; /* Remove default margin */
+            text-align: center; /* Center the text horizontally */
+        }
+        .content {
+            padding: 10px;
+        }
+        .tick{
+         margin-right:auto;
+         margin-left: auto;
+         display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <script language='javascript' type='text/javascript'>
+        function DisableBackButton() {
+        window.history.forward(3)
+        }
+        DisableBackButton();
+        window.onload = DisableBackButton;
+        window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
+        window.onunload = function() { void (0) }
+        </script>
+
+<div class="header">
+    <!-- Your logo image -->
+    <img src="{{ url_for('static', filename='image/third_eye.png') }}" class="logo" alt="Third Eye Logo">
+    
+</div>
+
+
+    <h1 >THANK YOU!</h1>
+<div class="content">
+    <h2 style="text-align: center;">YOU HAVE SUCCESSFULLY COMPLETED THE EXAM</h2>
+    
+</div>
+
+</body>
+</html>

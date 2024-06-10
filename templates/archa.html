@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Examination</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0px;
+    }
+    .container {
+       max-width: 800px;
+       
+        margin: 20px auto;
+        padding: 10px;
+        background-color: #1c2121;
+        opacity: 0.6;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        color: #f7f4f4;
+        margin-top: 0px;
+        
+        
+    }
+    h1, h2, h3 {
+        text-align: center;
+    }
+    .question {
+        margin-bottom: 20px;
+        align-content: left;
+        font-size: 25px;    
+        text-align: left;
+    }
+    .options {
+        display: flex;
+        flex-direction: column;
+        font-size: 20px;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    .option {
+        margin-bottom: 10px;
+    }
+    #timeRemaining{
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    #timer {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    #question-number {
+        float: right;
+        font-weight: bold;
+    }
+   
+
+    
+    #submit-btn {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .header {
+        color: #333;
+        padding: 0px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .logo {
+        height: 250px;
+        width: auto;
+    }
+    #video-container1 {
+            position: relative;
+            left: 1025px;
+            top: 30px;
+        }
+        #video-container1 img {
+            max-width: 250px;
+            border-radius: 5px;
+        }
+        #video-container2 {
+            text-align: right;
+            margin-bottom: 20px;
+            margin: 0px 350px;
+            margin-top:-120px;
+            position: fixed;
+            margin-right: 100px;
+           
+        }
+        #video-container2 img {
+            max-width: 250px;
+            border-radius: 5px;
+        }
+        .logo {
+            position: absolute;
+            top: 0px;
+            left: 0px; 
+            width: 200px;
+            max-width: 100%; /* Set maximum width to ensure responsiveness */
+            height: auto; /* Allow height to adjust proportionally */
+            z-index: 1; 
+        }
+
+</style>
+</head>
+<body>
+    <img src="{{ url_for('static', filename='image/third_eye.png') }}" class="logo" alt="Third Eye Logo">
+    <div class="container">
+        <h1>Online Examination</h1>
+        <div id="timeRemaining">
+            <p> Remaining: <span id="timer">00:00</span></p>
+        </div>
+        <div class="question">
+            <h3>Question <span id="questionNumber">1</span>:</h3>
+            <p id="question"></p>
+        </div>
+        <div class="options" id="options">
+            <!-- Radio buttons for options will be dynamically added here -->
+           
+        </div>
+        <div>
+            <button onclick="prevQuestion()">Previous</button>
+            <button onclick="saveAnswerAndNext()">Next</button>
+        </div>
+        <div id="submit-btn">
+            <form >
+                <input type="button" value="Submit" onclick="submitExam()">
+            </form>
+        </div>
+        
+    </div>
+    <div id="video-container1">
+     <img src="{{ url_for('video_feed_object') }}" width="150px" height="150px" >
+    
+    </div>
+    
+
+       <div id="video-container2">
+     <img src="{{ url_for('video_feed_face') }}" width="150px" height="150px" >
+    </div>
+    <div id="warning" style="display: none;">
+        <p>Please return to the test page and do not switch tabs.</p>
+    </div>
+    <script>
+       
+         // JavaScript to disable right-click
+    document.addEventListener('contextmenu', function (event) {
+        event.preventDefault();
+    });
+
+    // JavaScript to disable copying text (Ctrl + C, Ctrl + X, Ctrl + V)
+    document.addEventListener('keydown', function (event) {
+        if (event.ctrlKey && (event.key === 'c' || event.key === 'x' || event.key === 'v'|| event.key === 'r')) {
+            event.preventDefault();
+            window.alert("don't press shortcuts")
+        }
+    });
+    let warningDisplayed = false;
+    let count=0;
+        // Function to handle visibility change
+        function handleVisibilityChange() {
+            if (document.hidden) {
+                // If the document is hidden (user switched tabs or minimized browser), display the warning
+                window.alert("don't switch tabs")
+                count++;
+                warningDisplayed = true;
+                if(count>=3)
+                {
+                    window.open('tqpage.html');
+                    window.close();
+                }
+            } else {
+                // If the document is visible again, hide the warning
+                document.getElementById('warning').style.display = 'none';
+                warningDisplayed = false;
+            }
+        }
+
+        // Attach visibility change event listener
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+            let currentQuestion = 1;
+        let questions = [];
+        let selectedOptions = [];
+        // Function to fetch questions from the server
+        function fetchQuestions() {
+            fetch('/fetch_questions')
+                .then(response => response.json())
+                .then(data => {
+                    questions = data;
+                    updateQuestion();
+                })
+                .catch(error => console.error('Error fetching questions:', error));
+        }
+
+        // Function to update the question and options
+        function updateQuestion() {
+            document.getElementById('questionNumber').textContent = currentQuestion;
+            document.getElementById('question').textContent = questions[currentQuestion - 1].question;
+
+            const optionsElement = document.getElementById('options');
+            optionsElement.innerHTML = '';
+
+            const options = Object.entries(questions[currentQuestion - 1].options);
+            options.forEach(([optionKey, optionValue]) => {
+                const label = document.createElement('label');
+                label.className = 'option';
+                const radioButton = document.createElement('input');
+        radioButton.type = 'radio';
+        radioButton.name = `q${currentQuestion}`;
+        radioButton.value = optionKey;
+        if (selectedOptions[currentQuestion] === optionKey) {
+            radioButton.checked = true; // Pre-select the previously selected option
+        }
+        label.appendChild(radioButton);
+        label.appendChild(document.createTextNode(` ${optionValue}`));
+        optionsElement.appendChild(label);
+    });
+}
+
+        // Function to move to the next question
+        function nextQuestion() {
+            if (currentQuestion < questions.length) {
+                currentQuestion++;
+                updateQuestion();
+            }
+        }
+
+        // Function to move to the previous question
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                updateQuestion();
+            }
+        }
+
+        // Function to save user's answer and move to the next question
+        function saveAnswerAndNext() {
+            const selectedAnswer = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+            
+            if (selectedAnswer) {
+        selectedOptions[currentQuestion] = selectedAnswer.value;
+    }
+    nextQuestion();
+    updateQuestion()
+        }
+
+        // Fetch questions when the page loads
+        fetchQuestions();
+         // Function to submit the exam
+
+         function submitExam() {
+            
+            
+            window.open('tqpage.html');
+            window.close();
+
+// Close the current tab
+
+        }
+    // Code for timer
+    const timerElement = document.getElementById('timer');
+    let timeLeft = 900; // 10 minutes in seconds
+
+    function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    const timer = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            updateTimer();
+        } else {
+            clearInterval(timer);
+            window.location.href = 'tqpage.html';
+        }
+    }, 1000);
+
+    updateTimer();
+    </script>
+</body>
+</html>

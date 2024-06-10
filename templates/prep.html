@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Make the body take up the full viewport height */
+   /* Remove default margin */
+}
+
+.container {
+    text-align: center; /* Center the content horizontally */
+}
+.button-container {
+    top: 120px; /* Add margin to separate from the heading */
+}
+.logo {
+            position: absolute;
+            top: 0px;
+            left: 0px; 
+            width: 200px;
+            max-width: 100%; /* Set maximum width to ensure responsiveness */
+            height: auto; /* Allow height to adjust proportionally */
+            z-index: 1; 
+        }
+    </style>
+</head>
+<body>
+    <h1>You can start the exam in <span id="countdown">10</span> seconds</h1><br>
+    <img src="{{ url_for('static', filename='image/third_eye.png') }}" class="logo" alt="Third Eye Logo">
+    <form id="examForm" action="\qnt">
+        <button id="startButton" type="submit" disabled>Start Exam</button>
+    </form>
+
+    <script>
+        // Countdown timer
+        var countdownElement = document.getElementById("countdown");
+        var startButton = document.getElementById("startButton");
+        var countdown = 10;
+
+        var countdownInterval = setInterval(function() {
+            countdown--;
+            countdownElement.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                startButton.removeAttribute("disabled");
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

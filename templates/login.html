@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style_archa.css')}}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <div class="full-page" style="background-color: white; opacity:1; ">
+        <img src="{{ url_for('static', filename='image/third_eye.png') }}" class="logo" alt="Third Eye Logo">
+        <div class="navbar">
+           
+            </div>
+            <nav>
+                <ul id='MenuItems' >
+                    <li><a href='home.html'>Home</a></li>
+                    <li><a href='about.html'>About Us</a></li>
+                    <li><a href='service.html'>Services</a></li>
+                    <li><a href='contact.html'>Contact</a></li>
+                    <li><button class='loginbtn' onclick="document.getElementById('login-form').style.display='block'" style="width:auto; color: black;" >Login</button></li>
+                </ul>
+            </nav>
+        </div>
+        <div id='login-form'class='login-page'>
+            <div class="form-box">
+                <div class='button-box'>
+                    <div id='btn'></div>
+                    
+                    
+                </div>
+                <h2>Login</h2>
+                {% if error %}
+                <p>{{ error }}</p>
+                {% endif %}
+                <form id='login' class='input-group-login' method="POST" action="\login">
+                    <input type='text'class='input-field'placeholder='Enter Username' required name="username" id="username">
+		    <input type='password'class='input-field'placeholder='Enter Password' required name="password" id="password"><br><br>
+            <label>
+                Enter the IP address in the DroidCam app<br>
+                (for eg: http://192.168.29.223:4747/video)
+            </label>
+		    <input type='text'class='input-field'placeholder='Enter your IP address' required name="address" id="address"><br><br>
+		    <button type='submit'class='submit-btn'>Log in</button>
+		 </form>
+		 
+            </div>
+        </div>
+    </div>
+    <script>
+        var x=document.getElementById('login');
+		
+		var z=document.getElementById('btn');
+		
+		function login()
+		{
+			x.style.left='50px';
+			y.style.left='450px';
+			z.style.left='0px';
+		}
+	</script>
+	<script>
+        var modal = document.getElementById('login-form');
+        window.onclick = function(event) 
+        {
+            if (event.target == modal) 
+            {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+       

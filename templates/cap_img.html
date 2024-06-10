@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Capture</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- Custom styles -->
+    <style>
+        body {
+            background-color: #f7f7f7;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        #video {
+            width: 320px;
+            height: auto;
+            margin-right: 20px;
+        }
+        button {
+            display: block;
+            margin: 10px auto;
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #337ab7;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #snapshot-preview {
+            width: 320px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 20px;
+        
+        }
+        .guide{
+            line-height: 1.5;
+            color: black;
+            font-family: sans-serif;
+            font-size: medium;
+            margin-right: 20px;
+            align-items: center;
+            margin-left: 30%;
+        }
+        .logo {
+            position: absolute;
+            top: 0px;
+            left: 0px; 
+            width: 200px;
+            max-width: 100%; /* Set maximum width to ensure responsiveness */
+            height: auto; /* Allow height to adjust proportionally */
+            z-index: 1; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Capture your photo</h1>
+   
+    <div class="container">
+        
+        <div>
+            <img src="{{ url_for('static', filename='image/third_eye.png') }}" class="logo" alt="Third Eye Logo">
+            <video id="video" autoplay ></video>
+            <button id="snapshot-button" onclick="captureSnapshot()">Take Snapshot</button>
+        </div>
+        <div>
+            <img id="snapshot-preview">
+            <button id="save-button" onclick="saveSnapshot()" disabled>Save Picture</button>
+        </div>
+    </div>
+    <div class="guide">
+        <h3>
+            Guidelines for capturing image.
+        </h3>
+        <ol>
+            <li>
+                Image should be captured in a well lit condition
+
+            </li>
+            <li>
+                more than 1 person should not be present while capturing the image
+            </li>
+        </ol>
+    </div>
+
+    <script>
+        // Function to capture snapshot from webcam
+        function captureSnapshot() {
+            // Select the video element
+            var sscaptured = true
+            var video = document.getElementById('video');
+
+            // Create a canvas element
+            var canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Draw the video frame onto the canvas
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert the canvas to a data URL
+            var dataURL = canvas.toDataURL('image/jpeg');
+
+            // Display the snapshot preview
+            var snapshotPreview = document.getElementById('snapshot-preview');
+            snapshotPreview.src = dataURL;
+
+            // Enable save button
+            document.getElementById('save-button').disabled = false;
+        }
+
+        // Function to save the snapshot image
+        function saveSnapshot() {
+            // Get the data URL of the snapshot preview
+            var dataURL = document.getElementById('snapshot-preview').src;
+    
+            // Send the data URL to the server to save the image
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        alert('Snapshot saved successfully!');
+                        // Redirect to prep.html after OK is pressed
+                        window.location.href = "/prep.html";
+                    } else {
+                        alert('Failed to save snapshot!');
+                    }
+                }
+            };
+            xhr.open('POST', '/save_snapshot', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({ image: dataURL }));
+        }
+    
+
+        // Access the webcam and stream video
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                var video = document.getElementById('video');
+                video.srcObject = stream;
+            })
+            .catch(function(err) {
+                console.error('Error accessing webcam:', err);
+            });
+    </script>
+</body>
+</html>

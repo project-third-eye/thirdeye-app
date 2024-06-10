@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Detected Objects</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Detected Objects</h1>
+    <table>
+        <tr>
+            <th>Label</th>
+            <th>Bounding Box</th>
+        </tr>
+        {% for detected_object in detected_objects %}
+            <tr>
+                <td>{{ detected_object.label }}</td>
+                <td>{{ detected_object.bounding_box }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

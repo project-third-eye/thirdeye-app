@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+</head>
+<body>
+    <h1>Add User</h1>
+    <form action="/add" method="post"> <!-- Specify method="post" here -->
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <label>Account Type:</label><br>
+        <input type="radio" id="admin" name="account_type" value="admin" required>
+        <label for="admin">Admin</label><br>
+        
+        <input type="radio" id="user" name="account_type" value="user" required>
+        <label for="user">User</label><br><br>
+        
+        <input type="submit" value="Add User">
+    </form>
+</body>
+</html>
